@@ -41,7 +41,7 @@ def existing_user
 end
 
 
-#allows a user to sign up (create a username and password) and checks if username is already taken
+#allows a user to sign up (create a username and password), checks if username is already taken, creates new user instance
 def create_user
     puts "Please enter a username you'd like"
 
@@ -51,7 +51,7 @@ def create_user
         puts "Please enter a password"
         new_user_password_input = gets.chomp
         puts "Great, you're officially a recipe-hacker!"
-        user = User.create(username: new_username_input, password: new_user_password)
+        $current_user = User.create(username: new_username_input, password: new_user_password)
     else puts "whoops! that username has already been taken."
         create_user
     end
@@ -64,33 +64,20 @@ def menu
         puts "How can we help you? Please enter a number from the menu below to get started"
         puts ""
 
-            puts "1 - Find recipes based on ingredients you already have"
+            puts "1 - Find recipes based on ingredients I already have"
             puts "2 - View my recipes"
-            puts "3 - Delete a recipe"
+            puts "3 - Edit recipe list"
         gets.chomp
         if gets.chomp == "1"
             recipe_list
+        
+        elsif gets.chomp == "2"
+            see_saved_recipes
+        elsif gets.chomp == "3"
+            
+            see_saved_recipes
         end
-            
-            
-        
     end
-#         puts menu_table
-        
-#        
-
- 
-#         elsif gets.chomp == "2"
-#             save_recipe
-#         elsif gets.chomp == "3"
-        
-
-#         elsif gets.chomp == "5"
-#             menu_is_active ==false
-#     end
-# end
-
-# end
 
 #user enters three ingredients, which are pushed into an array (and used for searching within the api)
 def get_ingredients_from_user
@@ -121,20 +108,28 @@ end
 #for option 1 - output recipes based on ingredients users input
 def recipe_list
     order_recipe_titles
+    puts "Want to save any recipe? (y/n)"
+    if gets.chomp == "y"
+        save_recipe
+    else menu
+    end
 end
 
 #for option 2 - create & save new recipe instance & associate with the user (by creating a usersrecipe instance)
-def save_recipe(title, user)
+def save_recipe(title)
    r = Recipe.create(title: title)
-   UsersRecipe.create(user_id: user.id, recipe_id: r.id)
+   UsersRecipe.create(user_id: $current_user.id, recipe_id: r.id)
 
 end
 #for option 3 - see saved recipes
-# def see_saved_recipes
-#     array = []
-#     saved_recipes = UsersRecipe.all.collect do | r.id|
-# end
-# end
+def see_saved_recipes
+    all_recipes = []
+    saved_recipes = UsersRecipe.all.collect do |userrecipe| userrecipe.id==$current_user.id
+    saved_recipes.each_with_index do |userrecipe, index|
+    all_recipes = "#{index+1}. #{userrecipe["title"]}"
+    end
+    puts all_recipes
+end
 
 #for option 4 - delete a recipe
 def delete_recipe
