@@ -5,8 +5,8 @@ require 'pry'
 require_relative '../db/seeds.rb'
 
 
-get_recipe_titles
-order_recipe_titles
+welcome_and_login
+menu
 
 
 

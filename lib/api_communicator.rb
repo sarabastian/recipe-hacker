@@ -16,7 +16,7 @@ def get_recipe_titles
     search_hash = JSON.parse(search_string)
     relevant_recipes = search_hash["results"]
     relevant_recipes.collect do |recipe|
-        recipes << recipe["title"]
+        recipes << recipe["title"].strip
     end
     
     recipes
@@ -25,9 +25,10 @@ end
 #order recipes in a list based on result (an array) from get_recipe_titles
 def order_recipe_titles
     title_array = []
-    get_recipe_titles.each_with_index do |title, i|
-        title_array << "#{i+1}. #{title}"
+    get_recipe_titles.each_with_index do |title, index|
+        title_array << "#{index+1}. #{title}"
     end
+    title_array
 end
 
 

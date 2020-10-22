@@ -4,7 +4,7 @@ require "tty-prompt"
 require 'rest-client'
 require 'json'
 require 'pry'
-
+$current_user = nil
 
 #login or be prompted to create account
 def welcome_and_login
@@ -32,11 +32,13 @@ def existing_user
     puts "and finally, password?"
     password_input = gets.chomp
     
-    if User.exists?(username: username_input, password: password_input) == true
-    puts "Hi, again. Let's get started!"
-  
-    else "We can't seem to find you. Try logging in again" 
+    $current_user = User.find_by(username: username_input, password: password_input) 
+    if $current_user == nil
+        puts ""
+    puts "We can't seem to find you. Try logging in again" 
         existing_user
+    else puts "Hi, again. Let's get started!"
+        
     end
 end
 
@@ -46,12 +48,12 @@ def create_user
     puts "Please enter a username you'd like"
 
     new_username_input = gets.chomp
-    user = User.find_by(username: new_username_input)
-    if user == nil
+    current_user = User.find_by(username: new_username_input)
+    if $current_user == nil
         puts "Please enter a password"
         new_user_password_input = gets.chomp
         puts "Great, you're officially a recipe-hacker!"
-        $current_user = User.create(username: new_username_input, password: new_user_password)
+        current_user = User.create(username: new_username_input, password: new_user_password_input)
     else puts "whoops! that username has already been taken."
         create_user
     end
@@ -67,9 +69,9 @@ def menu
             puts "1 - Find recipes based on ingredients I already have"
             puts "2 - View my recipes"
             puts "3 - Edit recipe list"
-        gets.chomp
+        
         if gets.chomp == "1"
-            recipe_list
+            puts recipe_list
         
         elsif gets.chomp == "2"
             see_saved_recipes
@@ -107,17 +109,32 @@ end
 
 #for option 1 - output recipes based on ingredients users input
 def recipe_list
-    order_recipe_titles
-    puts "Want to save any recipe? (y/n)"
+    
+    puts order_recipe_titles
+    puts ""
+   
+
+    puts "Want to save a recipe for later? (y/n)"
     if gets.chomp == "y"
-        save_recipe
+    puts "enter the number of the corresponding recipe you'd like to save"
+    
+    corres_number = gets.chomp
+ 
+    corres_choice = get_recipe_titles.collect do |title, index|
+        index == corres_number.to_i-1
+        title
+    end
+        save_recipe(corres_choice)
+    
     else menu
     end
 end
 
-#for option 2 - create & save new recipe instance & associate with the user (by creating a usersrecipe instance)
+
+#for option 1&2 - create & save new recipe instance & associate with the user (by creating a usersrecipe instance)
 def save_recipe(title)
    r = Recipe.create(title: title)
+   
    UsersRecipe.create(user_id: $current_user.id, recipe_id: r.id)
 
 end
@@ -127,12 +144,13 @@ def see_saved_recipes
     saved_recipes = UsersRecipe.all.collect do |userrecipe| userrecipe.id==$current_user.id
     saved_recipes.each_with_index do |userrecipe, index|
     all_recipes = "#{index+1}. #{userrecipe["title"]}"
+        end
     end
     puts all_recipes
 end
 
 #for option 4 - delete a recipe
-def delete_recipe
-end
+# def delete_recipe
+# end
 
 
