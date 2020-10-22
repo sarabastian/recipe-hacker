@@ -1,6 +1,7 @@
 require 'rest-client'
 require 'json'
 require 'pry'
+require_relative '../lib/command_line_interface'
 
 
 
@@ -22,10 +23,11 @@ def get_recipe_titles
 end
 
 #order recipes in a list based on result (an array) from get_recipe_titles
-# def order_recipe_titles
-#     get_recipe_titles.each_with_index do |title, i|
-#         puts "#{i+1}. #{title}"
-#     end
-# end
+def order_recipe_titles
+    title_array = []
+    get_recipe_titles.each_with_index do |title, i|
+        title_array << "#{i+1}. #{title}"
+    end
+end
 
 
