@@ -1,7 +1,7 @@
-sara = User.create(name: "Sara")
-sienna = User.create(name: "Sienna")
-rachel = User.create(name: "Rachel")
-hannah = User.create(name: "Hannah")
+sara = User.create(name: "Sara", username: 'sbastian', password: 'jack24')
+sienna = User.create(name: "Sienna", username: 'smori', password: 'bike')
+rachel = User.create(name: "Rachel", username: 'rjsmith', password: 'lobster')
+hannah = User.create(name: "Hannah", username: 'axelgirl', password: 'gtownlaw')
 
 r1 = Recipe.create(title: "Salted Shortbread Cookies")
 r2 = Recipe.create(title: "Sour Cream N Onion Burgers")
@@ -13,3 +13,7 @@ onion = Ingredient.create(name: "Onion", user_id: 3, recipe_id: 2)
 squash = Ingredient.create(name: "Squash", user_id: 2, recipe_id: 3)
 paprika = Ingredient.create(name: "Paprika",user_id: 4, recipe_id: 4)
 tomato = Ingredient.create(name: "Tomato", user_id: 3, recipe_id: 4)
+
+Ingredient.destroy_all
+User.destroy_all
+Recipe.destroy_all

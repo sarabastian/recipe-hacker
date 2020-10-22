@@ -1,21 +1,26 @@
-# require 'rest-client'
-# require 'json'
-# require 'pry'
+require 'rest-client'
+require 'json'
+require 'pry'
 
+def get_recipe_titles
+    search_params = 'http://www.recipepuppy.com/api/?i=' + get_ingredients_from_user.join(",")
+  
 
-
-#base_url = "http://www.recipepuppy.com/api/"
-# recipe_generation_url = base_url + "?i=" + user_ingredients.join(",")
-
-
-def get_recipes_from_api
-    n = 1
-    all_recipes = []
-    100.times do
-        response_string = RestClient.get('http://www.recipepuppy.com/api/?p=#{n}') 
-        response_hash = JSON.parse(response_string)
-        all_recipes << response_hash["results"]
-        n+=1
+    recipes = []
+    search_string = RestClient.get(search_params)
+    search_hash = JSON.parse(search_string)
+    relevant_recipes = search_hash["results"]
+    relevant_recipes.collect do |recipe|
+        recipes << recipe["title"].strip
     end
-    all_recipes
- end
+    
+    recipes
+end
+
+def order_recipe_titles
+    get_recipe_titles.each_with_index do |title, i|
+        puts "#{i+1}. #{title}"
+    end
+end
+
+
