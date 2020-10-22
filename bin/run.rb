@@ -5,7 +5,8 @@ require 'pry'
 require_relative '../db/seeds.rb'
 
 
-get_ingredients_from_user
+welcome_and_login
+menu
 
 
 

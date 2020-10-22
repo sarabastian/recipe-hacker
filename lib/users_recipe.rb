@@ -1,4 +1,4 @@
-class Ingredient < ActiveRecord::Base
+class UsersRecipe < ActiveRecord::Base
     belongs_to :user
     belongs_to :recipe
 end
