@@ -7,8 +7,9 @@ require_relative '../lib/command_line_interface'
 
 
 # # #getting an array of recipes from the api, based on user input of ingredients
-def get_recipe_titles
-    search_params = 'http://www.recipepuppy.com/api/?i=' + user_ingredient_inputs.join(",")
+def get_recipe_titles(user_ingredients)
+    
+    search_params = 'http://www.recipepuppy.com/api/?i=' + user_ingredients.join(",")
   
 
     recipes = []
@@ -23,9 +24,9 @@ def get_recipe_titles
 end
 
 #order recipes in a list based on result (an array) from get_recipe_titles
-def order_recipe_titles
+def order_recipe_titles(placeholder_array)
     title_array = []
-    get_recipe_titles.each_with_index do |title, index|
+    placeholder_array.each_with_index do |title, index|
         title_array << "#{index+1}. #{title}"
     end
     title_array
