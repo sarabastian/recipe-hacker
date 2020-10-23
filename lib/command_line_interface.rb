@@ -4,6 +4,7 @@ require "tty-prompt"
 require 'rest-client'
 require 'json'
 require 'pry'
+
 $current_user = nil
 
 #login or be prompted to create account
@@ -61,6 +62,8 @@ def create_user
     
 end
 
+
+
 #menu of options user can choose from
 def menu
         puts ""
@@ -70,17 +73,19 @@ def menu
             puts "1 - Find recipes based on ingredients I already have"
             puts "2 - View my recipes"
             puts "3 - Edit recipe list"
+            puts ""
     
         
         if gets.chomp == "1"
             
-            save_recipe_from_recipe_list
+        save_recipe_from_recipe_list
             puts ""
             puts "saved! redirecting you to the main menu for more recipe hacks"
             puts ""
+            puts ""
             menu
         elsif gets.chomp == "2"
-            puts see_saved_recipes
+            see_saved_recipes
         elsif gets.chomp == "3"
             
             see_saved_recipes
@@ -157,19 +162,21 @@ def save_recipe_from_recipe_list
 
 #for option 3 - see saved recipes
 def see_saved_recipes
-    
+    puts "your saved recipes are..."
     saved_recipes = UsersRecipe.where(user_id: $current_user.id)
-    if saved_recipes = []
-        puts "hmm, we're not finding any stored recipes. want to try searching and saving some?"
-        menu
-    else 
+    stored_array = []
+    # if saved_recipes == []
+    #     puts "hmm, we're not finding any stored recipes. want to try searching and saving some?"
+    #     menu
+    # else 
         recipe_id_array = saved_recipes.collect do |instance|
             instance.recipe_id
         end
         recipe_id_array.collect do |recipe|
-            puts Recipe.find(recipe).title
+            stored array << recipe.title
         end
-    end
+        puts stored array
+    
 end
     
         
