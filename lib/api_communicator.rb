@@ -8,7 +8,7 @@ require_relative '../lib/command_line_interface'
 
 # # #getting an array of recipes from the api, based on user input of ingredients
 def get_recipe_titles
-    search_params = 'http://www.recipepuppy.com/api/?i=' + get_ingredients_from_user.join(",")
+    search_params = 'http://www.recipepuppy.com/api/?i=' + user_ingredient_inputs.join(",")
   
 
     recipes = []

@@ -29,7 +29,7 @@ def existing_user
     
     puts "what's your username?"
     username_input = gets.chomp
-    puts "and finally, password?"
+    puts "and password?"
     password_input = gets.chomp
     
     $current_user = User.find_by(username: username_input, password: password_input) 
@@ -71,7 +71,7 @@ def menu
             puts "3 - Edit recipe list"
         
         if gets.chomp == "1"
-            puts recipe_list
+           save_from_recipe_list
         
         elsif gets.chomp == "2"
             see_saved_recipes
@@ -80,6 +80,10 @@ def menu
             see_saved_recipes
         end
     end
+
+def user_ingredient_inputs
+    get_ingredients_from_user
+end
 
 #user enters three ingredients, which are pushed into an array (and used for searching within the api)
 def get_ingredients_from_user
@@ -107,37 +111,40 @@ def get_ingredients_from_user
     return user_ingredients
 end
 
+
+
 #for option 1 - output recipes based on ingredients users input
 def recipe_list
     
     puts order_recipe_titles
     puts ""
+    save_from_recipe_list   
+end
    
 
-    puts "Want to save a recipe for later? (y/n)"
-    if gets.chomp == "y"
+def save_from_recipe_list
+    
     puts "enter the number of the corresponding recipe you'd like to save"
-    
     corres_number = gets.chomp
- 
-    corres_choice = get_recipe_titles.collect do |title, index|
-        index == corres_number.to_i-1
-        title
-    end
-        save_recipe(corres_choice)
-    
-    else menu
-    end
-end
 
+        order_recipe_titles.each_with_index do |title, index|
+           if title.index == corres_number.to_i-1
+            array << title
+           end
+        end
+end
+    
+
+    
 
 #for option 1&2 - create & save new recipe instance & associate with the user (by creating a usersrecipe instance)
-def save_recipe(title)
+def save_recipe
+  
    r = Recipe.create(title: title)
    
    UsersRecipe.create(user_id: $current_user.id, recipe_id: r.id)
-
 end
+
 #for option 3 - see saved recipes
 def see_saved_recipes
     all_recipes = []
