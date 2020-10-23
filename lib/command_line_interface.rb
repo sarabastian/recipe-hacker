@@ -70,9 +70,8 @@ def menu
         puts "How can we help you? Please enter a number from the menu below to get started"
         puts ""
 
-            puts "1 - Find recipes based on ingredients I already have"
+            puts "1 - Find & save recipes based on ingredients I already have"
             puts "2 - View my recipes"
-            puts "3 - Edit recipe list"
             puts ""
     
         
@@ -80,23 +79,14 @@ def menu
             
         save_recipe_from_recipe_list
             puts ""
-            savedr = see_saved_recipes
-            puts savedr
-            puts "saved! redirecting you to the main menu for more recipe hacks"
-            puts ""
-            puts ""
             menu
         elsif gets.chomp == "2"
-            savedr = see_saved_recipes
-            puts savedr
-        elsif gets.chomp == "3"
-            
-            see_saved_recipes
-       
+            puts "your saved recipes are..."
+            puts ""
+            puts saved
+            menu
         end
-    end
-
-
+end
 
 #user enters three ingredients, which are pushed into an array (and used for searching within the api)
 def get_ingredients_from_user
@@ -141,59 +131,55 @@ end
 def save_recipe_from_recipe_list
     new_list = []
     new_list << recipe_list
-    puts new_list
+    array = new_list.flatten
+    puts array
     puts ""
-    puts "enter the number of the corresponding recipe you'd like to save"
-
-    corres_number = gets.chomp
-    choice = new_list[corres_number.to_i-1]
+    puts "please enter the number of the corresponding recipe you'd like to save"
     
-    #save_recipe(choice)
-    r = Recipe.create(title: choice)
+    corres_number = gets.chomp
+    choice_num = (corres_number.to_i)-1
+    choice = array[choice_num]
+    choice_title = choice[2..-1].strip
+    puts "saving #{choice_title}!"
+    save_recipe(choice_title)
+    puts ""
+    
+    puts "saved, along with your previous recipes.."
+    puts ""
+    puts saved
+    
+    puts "redirecting you to the main menu for more recipe hacks"
+     
+ end
+
+ def save_recipe(title)
+    r = Recipe.create(title: title)
     UsersRecipe.create(user_id: $current_user.id, recipe_id: r.id)
  end
     
-    
-
-
+def saved
+    puts see_saved_recipes
+end
 # #for option 1&2 - create & save new recipe instance & associate with the user (by creating a usersrecipe instance)
 # def save_recipe(title)
   
-#    r = Recipe.create(title: title)
-#    UsersRecipe.create(user_id: $current_user.id, recipe_id: r.id)
-# end
-
 #for option 3 - see saved recipes
 def see_saved_recipes
-    puts "your saved recipes are..."
-    recipe_array = []
     
-    UsersRecipe.find(user_id: $current_user.id).map do |rec_instance|
-       rec_instance
+    recipes = []
+    arr = UsersRecipe.all.select do |urecipe|
+        urecipe.user_id == $current_user.id
     end
-    puts rec_instance
-   
-   
-    # if saved_recipes == []
-    #     puts "hmm, we're not finding any stored recipes. want to try searching and saving some?"
-    #     menu
-    # # else 
-   
-       
-    #puts recipe_array
+    arr.each do |urecipe|
+       recipes << urecipe.recipe.title
+    # ursrec = UsersRecipe.find_by(user_id: $current_user.id)
+    #     recipes << ursrec.recipe.title
+    # puts recipes
+    end
+    puts recipes
     
 end
     
+
         
-    
-    
-    #"#{index+1}. #{userrecipe["title"]}"
-        
-   
-
-
-#for option 4 - delete a recipe
-# def delete_recipe
-# end
-
 
