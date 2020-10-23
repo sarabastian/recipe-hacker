@@ -80,12 +80,15 @@ def menu
             
         save_recipe_from_recipe_list
             puts ""
+            savedr = see_saved_recipes
+            puts savedr
             puts "saved! redirecting you to the main menu for more recipe hacks"
             puts ""
             puts ""
             menu
         elsif gets.chomp == "2"
-            see_saved_recipes
+            savedr = see_saved_recipes
+            puts savedr
         elsif gets.chomp == "3"
             
             see_saved_recipes
@@ -163,19 +166,20 @@ def save_recipe_from_recipe_list
 #for option 3 - see saved recipes
 def see_saved_recipes
     puts "your saved recipes are..."
-    saved_recipes = UsersRecipe.where(user_id: $current_user.id)
-    stored_array = []
+    recipe_id_array = []
+    saved_recipes = UsersRecipe.all.map do |instance|
+    instance.user_id == $current_user.id
+    end
+   
     # if saved_recipes == []
     #     puts "hmm, we're not finding any stored recipes. want to try searching and saving some?"
     #     menu
-    # else 
-        recipe_id_array = saved_recipes.collect do |instance|
-            instance.recipe_id
-        end
-        recipe_id_array.collect do |recipe|
-            stored array << recipe.title
-        end
-        puts stored array
+    # # else 
+    saved_recipes.each do |instance|
+    recipe_id_array << instance.recipes.title
+    end
+       
+    puts recipe_id_array
     
 end
     
