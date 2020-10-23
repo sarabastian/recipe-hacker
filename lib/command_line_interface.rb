@@ -166,20 +166,21 @@ def save_recipe_from_recipe_list
 #for option 3 - see saved recipes
 def see_saved_recipes
     puts "your saved recipes are..."
-    recipe_id_array = []
-    saved_recipes = UsersRecipe.all.map do |instance|
-    instance.user_id == $current_user.id
+    recipe_array = []
+    
+    UsersRecipe.find(user_id: $current_user.id).map do |rec_instance|
+       rec_instance
     end
+    puts rec_instance
+   
    
     # if saved_recipes == []
     #     puts "hmm, we're not finding any stored recipes. want to try searching and saving some?"
     #     menu
     # # else 
-    saved_recipes.each do |instance|
-    recipe_id_array << instance.recipes.title
-    end
+   
        
-    puts recipe_id_array
+    #puts recipe_array
     
 end
     
