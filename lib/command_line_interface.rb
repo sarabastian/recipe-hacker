@@ -9,6 +9,7 @@ $current_user = nil
 
 #login or be prompted to create account
 def welcome_and_login
+    puts ""
     puts "welcome to recipe hacker! we're here to make your life easier and generate recipes for you based on what you already have in the pantry."
     puts ""
 #like a recipe, but don't have all the ingredients? save an ingredient to your shopping list, which you can add to or delete
