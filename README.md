@@ -1,10 +1,10 @@
 Welcome to Recipe Hacker, a convenient CLI app that will help you discover new recipes by making use of the ingredients you already have in your pantry!
 
-~Let's get started~
+Let's get started
 
 Instructions:
 
-1. To start recipe hacking, simply run 'bundle install' and enter ruby/bin.run.rb in your command line.
+1. To start recipe hacking, simply run 'bundle install', 'rake db:migrate', 'rake db:seed', and type 'ruby bin/run.rb' in your command line.
 
 2. You'll be prompted to either sign in, or sign up if you are a new user to the service.
 
